@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <random>
+#include "sort/quickSort.hpp"
 
 int main()
 {
@@ -10,30 +11,32 @@ int main()
     auto limitRand = [](int &number) { number = number % 100; };
     std::generate(randomVector.begin(), randomVector.end(), rand);
     std::for_each(randomVector.begin(), randomVector.end(), limitRand);
-    const std::vector<int> test = randomVector;
+    std::vector<int> test = randomVector;
 
     for (int value : randomVector)
     {
         std::cout << value << std::endl;
     }
     std::cout << "--------------" << std::endl;
-    //heapSort(randomVector);
+    quickSort(randomVector);
     for (int value : randomVector)
     {
         std::cout << value << std::endl;
     }
-    /*std::cout << "--------------" << std::endl;
+    std::cout << "--------------" << std::endl;
+    test[0] *= -1;
+    test[2] *= -1;
+    test[4] *= -1;
     for (int value : test)
     {
         std::cout << value << std::endl;
     }
     std::cout << "--------------" << std::endl;
-    std::vector<int> result = mergeSort(test);
-    for (int value : result)
+    quickSort(test);
+    for (int value : test)
     {
         std::cout << value << std::endl;
     }
     //std::reverse(randomVector.begin(), randomVector.end());
-*/
     return 0;
 }

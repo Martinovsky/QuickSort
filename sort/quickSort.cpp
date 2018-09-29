@@ -4,13 +4,15 @@
 
 static std::size_t partition(std::vector<int> &data, std::size_t min, std::size_t max)
 {
-    std::size_t j = min - 1; // Pb with min = 0;
+    max = max - 1;
+    std::size_t j = min;
+    bool first = true;
     int save = 0;
-    for (std::size_t i = min; i < (max - 1); ++i)
+    for (std::size_t i = min; i < max; ++i)
     {
-        if (data[i] <= data[max - 1])
+        if (data[i] <= data[max])
         {
-            ++j;
+            (first) ? first = false : ++j;
             if (j != i)
             {
                 save = data[j];
@@ -19,28 +21,33 @@ static std::size_t partition(std::vector<int> &data, std::size_t min, std::size_
             }
         }
     }
-    ++j;
+    (first) ? first = false : ++j;
     save = data[j];
-    data[j] = data[max - 1];
-    data[max - 1] = save;
+    data[j] = data[max];
+    data[max] = save;
     return j;
 }
 
-void quickSort(std::vector<int> &data, std::size_t min, std::size_t max)
+void quickSort(std::vector<int> &data)
 {
     if (data.empty() || data.size() < 2)
     {
         return;
     }
-    std::queue<std::pair<std::size_t,std::size_t>> left;
-    std::queue<std::pair<std::size_t,std::size_t>> right;
+    std::queue<std::pair<std::size_t, std::size_t>> todo;
+    std::pair<std::size_t, std::size_t> current = {0, data.size()};
     do
     {
-        if (min < max)
+        if (!todo.empty())
         {
-            std::size_t pivot  ; 
+            current = todo.front();
+            todo.pop();
         }
-    }
-
-    
+        if (current.first < current.second)
+        {
+            std::size_t pivot = partition(data, current.first, current.second);
+            todo.push({current.first, pivot});
+            todo.push({pivot + 1, current.second});
+        }
+    } while (!todo.empty());
 }
